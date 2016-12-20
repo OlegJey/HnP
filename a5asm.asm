@@ -21,31 +21,27 @@ _add:	mov eax, 0
 	add ax, word [ebp + 12]
 	push eax
 	pushfd
-	jmp _printControl
+	jmp _printFormat
 	
-	
-	
-_printControl:	
-    push dword fmt0
+_printFormat:	
+    	push dword fmt0
 	call printf
-
-
-_getReg:
-    mov bx, 0800h
 	add esp, 4
+	mov bx, 0800h
 	pop eax
+
+    	
+_getReg:	
 	test bx,ax	
 	jz _0
-	jmp _1
-	 
+	jmp _1 
 _printReg:
-
-    push dword fmt1
+    	push dword fmt1
 	call printf
-    add esp, 8
+    	add esp, 8
 	shr bx, 1
 	cmp bx, 0
-	jnz _getreg
+	jnz _getReg
 	
 	;push dword fmt2
 	;call printf
@@ -68,7 +64,8 @@ _sub:	mov eax, 0
 	sub ax, word [ebp + 12]
 	push eax
 	pushfd
-	jmp _printControl
+	jmp _printFormat
+	
 _0 :	push dword 0
 	jmp _printReg
 _1 :	push dword 1
