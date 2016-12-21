@@ -4,7 +4,6 @@ section .text
 
 extern printf
 
-
 global addsub
 
 addsub:	
@@ -24,36 +23,46 @@ _add:	mov eax, 0
 	jmp _printFormat
 	
 _printFormat:	
+	push dword fmt3; "Flags:"
+	call printf
+	add esp, 4
+	push dword fmt2; "\n"
+	call printf
+	add esp, 4
+	
     	push dword fmt0
 	call printf
 	add esp, 4
 	mov bx, 0800h
-	pop eax
+	
 
     	
-_getReg:	
-	test bx,ax	
+_getReg:pop eax	
+	test bx,ax
+	push eax	
 	jz _0
 	jmp _1 
+	
 _printReg:
     	push dword fmt1
 	call printf
+	
     	add esp, 8
 	shr bx, 1
 	cmp bx, 0
 	jnz _getReg
 	
-	;push dword fmt2
-	;call printf
-;	pop eax; loeschen
+	push dword fmt2
+	call printf
+	add esp, 4
 
-	;pushfd
-	;mov eax, dword [ebp + 20]
-	;mov eax, dword [eax]
-	;pop eax
-	;pop ebx
+
+	mov eax, dword [ebp + 20]
+	pop word [eax]
+	add esp, 2; 4 byte mit pop zusammenrechen
 	
-	;add esp, 12;aufraeumen, 8 12 16
+	
+	
 	pop eax
 	mov esp, ebp
 	pop ebp
@@ -68,14 +77,14 @@ _sub:	mov eax, 0
 	
 _0 :	push dword 0
 	jmp _printReg
+	
 _1 :	push dword 1
 	jmp _printReg
 
 	
 ;********Daten-Segment********
 section .data
-
 fmt0: dw "O D I T S Z   A   P   C ",10,0
 fmt1: dw "%d "
-fmt2: dw "  ",10,0
-
+fmt2: dw "  ",10,0;"\n"
+fmt3: dw "Flags: ",10
