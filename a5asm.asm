@@ -12,7 +12,7 @@ addsub:
 	sub esp, 4
 	mov eax, 0; muss in eax
 	add ax, word [ebp + 16]
-	cmp ax, 43
+	cmp al, 43
 	jnz _sub
 	
 _add:	mov eax, 0	
@@ -87,4 +87,4 @@ section .data
 fmt0: dw "O D I T S Z   A   P   C ",10,0
 fmt1: dw "%d "
 fmt2: dw "  ",10,0;"\n"
-fmt3: dw "Flags: ",10
+fmt3: dw "Flags: ",10,0
